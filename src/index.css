@@ -1,13 +1,307 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* 커스텀 스크롤바 스타일 */
+.custom-scrollbar {
+  overflow-y: overlay;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(62, 62, 62, 0.6);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(72, 72, 72, 0.6);
+}
+
+.custom-scrollbar::-webkit-scrollbar-button:vertical:start:decrement {
+  display: block;
+  height: 3px;
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-button:vertical:end:increment {
+  display: block;
+  height: 3px;
+  background: transparent;
+}
+
+/* 필터 드롭다운 전용 스크롤바 스타일 */
+.filter-dropdown-scrollbar {
+  overflow-y: overlay;
+}
+.filter-dropdown-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.filter-dropdown-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.filter-dropdown-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 2px;
+}
+
+.filter-dropdown-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.filter-dropdown-scrollbar::-webkit-scrollbar-button:vertical:start:decrement {
+  display: block;
+  height: 4px;
+  background: transparent;
+}
+
+.filter-dropdown-scrollbar::-webkit-scrollbar-button:vertical:end:increment {
+  display: block;
+  height: 4px;
+  background: transparent;
+}
+
+/* SelectMapList 전용 스크롤바 스타일 */
+.map-scrollbar {
+  /* Firefox */
+  scrollbar-width: auto; /* 기본 두께(얇지 않게) */
+  scrollbar-color: #404856 transparent;
+}
+.map-scrollbar::-webkit-scrollbar {
+  width: 8px; /* 기존 4px의 두 배 */
+}
+.map-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.map-scrollbar::-webkit-scrollbar-thumb {
+  background: #404856;
+  border: none;
+  border-radius: 0;
+}
+
+/* input 스핀 버튼 삭제 */
+input[type="number"] {
+  appearance: textfield; /* 표준 속성 */
+  -webkit-appearance: none; /* Chrome, Safari, Edge */
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* Chrome, Safari 등에서 스핀 버튼 제거 */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* 날짜 입력 필드의 기본 focus 스타일 제거 */
+input[type="date"]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* WebKit 브라우저의 기본 focus 스타일 제거 */
+input[type="date"]:focus::-webkit-datetime-edit {
+  outline: none;
+}
+
+/* Firefox의 기본 focus 스타일 제거 */
+input[type="date"]:focus::-moz-datetime-edit {
+  outline: none;
+}
+
+/* 달력 아이콘 커스터마이징 */
+.date-input-custom {
+  user-select: none !important; /* 텍스트 선택 방지 */
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  cursor: pointer; /* 전체 input을 클릭 가능하게 */
+  position: relative;
+  -webkit-touch-callout: none; /* iOS에서 텍스트 선택 방지 */
+  -webkit-tap-highlight-color: transparent; /* 터치 하이라이트 제거 */
+}
+
+/* input 내부 텍스트 선택 방지 */
+.date-input-custom::-webkit-input-placeholder {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.date-input-custom::-moz-placeholder {
+  user-select: none;
+  -moz-user-select: none;
+}
+
+.date-input-custom:-ms-input-placeholder {
+  user-select: none;
+  -ms-user-select: none;
+}
+
+/* input 전체 클릭 시 달력 열기 */
+.date-input-custom::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  cursor: pointer;
+  pointer-events: none; /* 이 요소가 클릭을 방해하지 않도록 */
+}
+
+/* Date input custom styles */
+.date-input-custom::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  padding: 0;
+  margin: 0 0 0 4px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.date-input-custom::-moz-calendar-picker-indicator {
+  filter: invert(1);
+  padding: 0;
+  margin: 0 0 0 4px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.date-input-custom::-webkit-input-placeholder {
+  color: #9ca3af;
+  user-select: none !important;
+}
+
+.date-input-custom::-moz-placeholder {
+  color: #9ca3af;
+  user-select: none !important;
+}
+
+.date-input-custom:-ms-input-placeholder {
+  color: #9ca3af;
+  user-select: none !important;
+}
+
+.date-input-custom:-moz-placeholder {
+  color: #9ca3af;
+  user-select: none !important;
+}
+
+/* PieChart 클릭 방지 스타일 */
+.recharts-wrapper {
+  outline: none !important;
+  border: none !important;
+  user-select: none !important;
+}
+
+.recharts-wrapper:focus {
+  outline: none !important;
+  border: none !important;
+}
+
+.recharts-wrapper:focus-visible {
+  outline: none !important;
+  border: none !important;
+}
+
+.recharts-wrapper * {
+  outline: none !important;
+  border: none !important;
+  user-select: none !important;
+}
+
+/* Date input disabled text color */
+.date-input-custom:disabled {
+  color: white !important;
+}
+
+/* date input의 비활성화된 날짜들도 흰색으로 표시 */
+.date-input-custom::-webkit-datetime-edit {
+  color: white !important;
+}
+
+.date-input-custom::-webkit-datetime-edit-fields-wrapper {
+  color: white !important;
+}
+
+.date-input-custom::-webkit-datetime-edit-text {
+  color: white !important;
+}
+
+.date-input-custom::-webkit-datetime-edit-month-field,
+.date-input-custom::-webkit-datetime-edit-day-field,
+.date-input-custom::-webkit-datetime-edit-year-field {
+  color: white !important;
+}
+
+/* Firefox용 date input 스타일 */
+.date-input-custom::-moz-datetime-edit {
+  color: white !important;
+}
+
+.date-input-custom::-moz-datetime-edit-fields-wrapper {
+  color: white !important;
+}
+
+.date-input-custom::-moz-datetime-edit-text {
+  color: white !important;
+}
+
+.date-input-custom::-moz-datetime-edit-month-field,
+.date-input-custom::-moz-datetime-edit-day-field,
+.date-input-custom::-moz-datetime-edit-year-field {
+  color: white !important;
+}
+
+.date-input-custom::-webkit-datetime-edit-text {
+  color: white !important;
+}
+
+.date-input-custom::-webkit-datetime-edit-month-field {
+  color: white !important;
+}
+
+.date-input-custom::-webkit-datetime-edit-day-field {
+  color: white !important;
+}
+
+.date-input-custom::-webkit-datetime-edit-year-field {
+  color: white !important;
+}
+
+/* 스크롤바 숨기기 */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* WebKit */
 }
