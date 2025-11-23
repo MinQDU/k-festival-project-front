@@ -1,5 +1,6 @@
 // src/types/festival.ts
 export interface FestivalItem {
+  id: number;
   festivalName: string;
   holdPlace: string;
   festivalStartDate: string;
@@ -19,5 +20,14 @@ export interface FestivalItem {
   providerInsttCode: string;
   providerInsttName: string;
   image: string;
+  like: boolean;
+  likeCount: number;
   category: string[];
+}
+
+export interface FestivalSimple {
+  id: number;
+  name: string;
+  imageUrl: string;
+  region: string;
 }

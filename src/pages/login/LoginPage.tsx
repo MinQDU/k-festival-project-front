@@ -61,7 +61,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-[380px]">
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-8">
       <div className="w-full max-w-md px-6">
         <div className="mb-8 text-center">
           <img
@@ -77,7 +77,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-6">
           <div>
-            <label className="mb-2 block text-sm font-medium text-white">아이디</label>
+            <label className="mb-2 block text-sm font-medium text-black">아이디</label>
             <input
               type="text"
               value={username}
@@ -85,12 +85,12 @@ export default function LoginPage() {
               onKeyDown={handleKeyDown}
               placeholder="아이디를 입력해주세요"
               disabled={isLoading}
-              className="w-[clamp(16rem,25vw,20rem)] border border-[#3E4652] bg-[#1A2332] px-4 py-3 text-white placeholder-[#6B7280] transition-colors focus:border-[#A8C7FE] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-[clamp(16rem,25vw,20rem)] border border-[#3E4652] bg-gray-200 px-4 py-3 text-black placeholder-[#6B7280] transition-colors focus:border-[#A8C7FE] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-white">비밀번호</label>
+            <label className="mb-2 block text-sm font-medium text-black">비밀번호</label>
             <input
               type="password"
               value={password}
@@ -98,7 +98,7 @@ export default function LoginPage() {
               onKeyDown={handleKeyDown}
               placeholder="비밀번호를 입력해주세요"
               disabled={isLoading}
-              className="w-[clamp(16rem,25vw,20rem)] border border-[#3E4652] bg-[#1A2332] px-4 py-3 text-white placeholder-[#6B7280] transition-colors focus:border-[#A8C7FE] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-[clamp(16rem,25vw,20rem)] border border-[#3E4652] bg-gray-200 px-4 py-3 text-black placeholder-[#6B7280] transition-colors focus:border-[#A8C7FE] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
 
@@ -107,8 +107,8 @@ export default function LoginPage() {
             disabled={!isLoginEnabled || isLoading}
             className={`w-[clamp(16rem,25vw,20rem)] rounded-lg px-4 py-3 font-medium transition-colors ${
               isLoginEnabled && !isLoading
-                ? "cursor-pointer bg-[#0F079F] text-white hover:bg-[#0D0680]"
-                : "cursor-not-allowed bg-[#374151] text-[#6B7280]"
+                ? "cursor-pointer bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500 shadow-md hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600"
+                : "cursor-not-allowed bg-blue-200 text-[#6B7280]"
             }`}
           >
             {isLoading ? "로그인 중..." : "LOGIN"}
@@ -116,7 +116,7 @@ export default function LoginPage() {
 
           {errorMessage && (
             <div className="max-w-[clamp(16rem,25vw,20rem)] text-center text-sm text-red-500">
-              {errorMessage}
+              {"아이디와 비밀번호를 다시 확인해주세요."}
             </div>
           )}
 
@@ -131,6 +131,16 @@ export default function LoginPage() {
             </button>
           </div>
         </form>
+        <div className="mt-6 text-center">
+          {/*홈 화면 으로 이동 */}
+          <button
+            type="button"
+            onClick={() => navigate(ROUTES.HOME)}
+            className="cursor-pointer rounded-lg bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500 p-2 shadow-md hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600"
+          >
+            홈으로
+          </button>
+        </div>
       </div>
 
       {/* GUEST 사용자 차단 모달 */}

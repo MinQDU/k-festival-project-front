@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { ROUTES } from "../../constants/route";
 import { useAuthStore } from "../../stores/authStore";
 import { logoutUser, getProfile } from "../../services/auth";
+import SearchBar from "./SearchBar";
 
 // 애플리케이션의 메인 헤더 컴포넌트
 export default function Header() {
@@ -35,8 +36,8 @@ export default function Header() {
   };
 
   return (
-    <header style={{ backgroundColor: "#181818" }}>
-      <div className="flex items-center gap-8 px-8 py-4">
+    <header className="sticky top-0 z-50 bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500 shadow-md">
+      <div className="flex items-center gap-3 px-4 py-1">
         <div className="logo">
           <a
             href={ROUTES.HOME}
@@ -51,8 +52,11 @@ export default function Header() {
             <img src="/assets/logo192.png" alt="K Festival Logo" className="w-8" />
           </a>
         </div>
+        <div className="flex-1">
+          <SearchBar />
+        </div>
 
-        <div className="ml-auto flex items-center gap-4">
+        <div className="ml-auto flex items-center">
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
               <span className="text-sm text-white">
@@ -60,7 +64,7 @@ export default function Header() {
               </span>
               <button
                 onClick={() => logoutUser(navigate)}
-                className="rounded-lg bg-[#FF4655] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#E63946]"
+                className="shrink-0 rounded-lg bg-[#FF4655] px-3 py-2 text-xs font-medium whitespace-nowrap text-white transition-colors hover:bg-[#E63946]"
               >
                 로그아웃
               </button>

@@ -8,9 +8,6 @@ interface FestivalListProps {
 }
 
 const FestivalList: React.FC<FestivalListProps> = ({ festivals }: FestivalListProps) => {
-  // 디버깅용: 진짜 배열 들어오는지 확인
-  console.log("FestivalList festivals length:", festivals?.length);
-
   if (!festivals || festivals.length === 0) {
     return <div className="mt-4 text-gray-500">축제 정보가 없습니다.</div>;
   }

@@ -6,7 +6,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   accessToken: localStorage.getItem("accessToken"),
   refreshToken: localStorage.getItem("refreshToken"),
-  isAuthenticated: false,
+  // 초기 로그인 상태는 localStorage 기준
+  isAuthenticated: !!localStorage.getItem("accessToken"),
   isLoading: false,
 
   // 로그인 성공 시 토큰과 사용자 정보 설정
