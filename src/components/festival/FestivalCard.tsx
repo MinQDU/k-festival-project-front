@@ -26,7 +26,7 @@ export default function FestivalCard({
   if (mode === "micro") {
     return (
       <div
-        className="flex cursor-pointer items-center gap-3 rounded-lg border bg-white p-2 shadow-sm hover:bg-gray-50"
+        className="flex cursor-pointer items-center gap-3 rounded-lg bg-white p-2 shadow-sm hover:bg-gray-50"
         onClick={() => navigate(`/festival/${item.id}`)}
       >
         <div className="flex-1">

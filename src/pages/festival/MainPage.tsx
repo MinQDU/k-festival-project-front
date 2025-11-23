@@ -3,15 +3,25 @@ import { getFestivalList } from "../../services/festival";
 import { getUrgentJobs } from "../../services/festivalJob";
 import type { FestivalSimple } from "../../types/festival";
 import type { JobResponse } from "../../types/festivalJob";
-
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../stores/authStore";
 import FestivalCard from "../../components/festival/FestivalCard";
 import JobCard from "../../components/job/JobCard";
 import { getRecentFestivalsFromCookie } from "../../utils/recentFestivals";
+import JobApplyModal from "../../components/job/JobApplyModal";
 
 export default function MainPage() {
+  const hotTags = ["겨울", "크리스마스", "불꽃", "산타"];
+
+  const navigate = useNavigate();
+  const { user } = useAuthStore();
+  const currentUid = user?.uid ?? null;
+
   const [popular, setPopular] = useState<FestivalSimple[]>([]);
   const [urgentJobs, setUrgentJobs] = useState<JobResponse[]>([]);
   const [recent, setRecent] = useState<FestivalSimple[]>([]);
+  const [selectedJob, setSelectedJob] = useState<JobResponse | null>(null);
+  const [applyMode, setApplyMode] = useState<"create" | "edit">("create");
 
   useEffect(() => {
     loadMain();
@@ -38,10 +48,25 @@ export default function MainPage() {
 
   return (
     <div className="min-h-screen bg-white px-4 pb-20">
+      <div className="">
+        <div className="flex flex-wrap gap-2">
+          {hotTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => window.dispatchEvent(new CustomEvent("searchTag", { detail: tag }))}
+              className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
+            >
+              #{tag}
+            </button>
+          ))}
+        </div>
+      </div>
       {/* 인기 축제 */}
       <div className="mt-4 flex items-center justify-between">
         <h2 className="text-xl font-bold">인기 축제</h2>
-        <button className="text-sm text-gray-500">더보기</button>
+        <button onClick={() => navigate("/festival")} className="text-sm text-gray-500">
+          더보기
+        </button>
       </div>
 
       <div className="mt-3 flex gap-4 overflow-x-auto pb-1">
@@ -55,29 +80,70 @@ export default function MainPage() {
       {/* 급구 알바 */}
       <div className="mt-8 flex items-center justify-between">
         <h2 className="text-xl font-bold">급구 알바</h2>
-        <button className="text-sm text-gray-500">더보기</button>
-      </div>
-      <div className="mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1">
-        {urgentJobs.map((job) => (
-          <div key={job.jobId} className="w-full shrink-0 snap-center">
-            <JobCard job={job} isMine={false} status={job.status} onClickApplyOrEdit={() => {}} />
-          </div>
-        ))}
+
+        <button onClick={() => navigate("/job")} className="text-sm text-gray-500">
+          더보기
+        </button>
       </div>
 
-      {/* 최근 본 축제 */}
+      <div className="mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1">
+        {urgentJobs.map((job) => {
+          const isMine = currentUid != null && currentUid === job.employerUid;
+          const hasApplied = !!job.alreadyApplied;
+          function setShowApplicantsForJob(jobId: number): void {
+            // For employers: navigate to the applicants management page for the job
+            navigate(`/job/${jobId}/applicants`);
+          }
+          return (
+            <div className="w-full shrink-0 cursor-pointer snap-center" key={job.jobId}>
+              <JobCard
+                key={job.jobId}
+                job={job}
+                isMine={isMine}
+                status={job.status}
+                onClickApplyOrEdit={() => {
+                  if (isMine) return;
+                  setSelectedJob(job);
+                  setApplyMode(hasApplied ? "edit" : "create");
+                }}
+                onClickManageApplicants={
+                  isMine ? () => setShowApplicantsForJob(job.jobId) : undefined
+                }
+              />
+            </div>
+          );
+        })}
+      </div>
+      {/* 지원/수정 모달 */}
+      {selectedJob && (
+        <JobApplyModal
+          job={selectedJob}
+          mode={applyMode}
+          onClose={() => setSelectedJob(null)}
+          onUpdated={() => {
+            // 지원 후 다시 불러오기
+            loadMain();
+          }}
+        />
+      )}
+
+      {/* 최근 본 항목 */}
       <div className="mt-10 flex items-center justify-between">
         <h2 className="text-xl font-bold">최근 본 항목</h2>
       </div>
 
       {recent.length === 0 ? (
-        <p className="mt-4 text-sm text-gray-500">최근 본 축제가 없습니다.</p>
+        <p className="mt-3 text-sm text-gray-500">최근 본 축제가 없습니다.</p>
       ) : (
-        <div className="mt-3 grid grid-cols-2 gap-4">
+        <div className="mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2">
           {recent.map((f) => (
-            <div key={f.id} className="rounded-xl border bg-white p-2 shadow-sm">
-              <img src={f.imageUrl} className="h-28 w-full rounded-lg object-cover" />
-              <p className="mt-2 text-sm font-semibold">{f.name}</p>
+            <div
+              key={f.id}
+              className="w-40 shrink-0 cursor-pointer snap-center rounded-xl border bg-white p-2 shadow-sm"
+              onClick={() => navigate(`/festival/${f.id}`)}
+            >
+              <img src={f.imageUrl} className="h-24 w-full rounded-lg object-cover" />
+              <p className="mt-2 line-clamp-1 text-sm font-semibold">{f.name}</p>
               <p className="text-xs text-gray-500">{f.region}</p>
             </div>
           ))}

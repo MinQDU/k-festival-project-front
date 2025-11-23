@@ -2,7 +2,6 @@ import Cookies from "js-cookie";
 import type { FestivalSimple } from "../types/festival";
 
 const COOKIE_KEY = "recentFestivals";
-const MAX_ITEMS = 10;
 
 /** 최근 본 축제 가져오기 */
 export function getRecentFestivalsFromCookie(): FestivalSimple[] {
@@ -30,7 +29,7 @@ export function addRecentFestival(festival: FestivalSimple) {
     const oldList = getRecentFestivalsFromCookie();
 
     const filtered = oldList.filter((f) => f.id !== festival.id);
-    const newList = [festival, ...filtered].slice(0, MAX_ITEMS);
+    const newList = [festival, ...filtered].slice(0, 10);
 
     console.log("[저장될 쿠키 값] =", newList);
 
