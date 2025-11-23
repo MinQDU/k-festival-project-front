@@ -65,13 +65,9 @@ export default function JobCard({
       <div className="flex items-start justify-between gap-2">
         <div>
           <div className="flex items-center gap-2">
-            <p className="text-base font-semibold">{job.title}</p>
-            <span className={`rounded-full px-2 py-0.5 text-xs ${statusColor}`}>{statusLabel}</span>
-            {job.isCertified && (
-              <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-yellow-800">
-                인증
-              </span>
-            )}
+            <p className={`font-semibold ${job.title.length > 15 ? "text-sm" : "text-base"}`}>
+              {job.title}
+            </p>
           </div>
           <p className="mt-1 text-xs text-gray-500">축제 ID: {job.festivalId}</p>
         </div>
@@ -89,9 +85,21 @@ export default function JobCard({
       </div>
 
       {/* 시급 */}
-      <p className="mt-3 text-lg font-bold">
-        {job.hourlyPay ? `시급 ${job.hourlyPay.toLocaleString()}원` : "시급 협의"}
-      </p>
+      <div className="flex justify-between text-center">
+        <div className="mt-3">
+          <p className="text-lg font-bold">
+            {job.hourlyPay ? `시급 ${job.hourlyPay.toLocaleString()}원` : "시급 협의"}
+          </p>
+        </div>
+        <div className="mt-3 flex items-center gap-2">
+          <span className={`rounded-full px-2 py-0.5 text-xs ${statusColor}`}>{statusLabel}</span>
+          {job.isCertified && (
+            <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-yellow-800">
+              인증
+            </span>
+          )}
+        </div>
+      </div>
 
       {/* 근무 시간 / 장소 등 */}
       <div className="mt-2 flex flex-wrap gap-4 text-xs text-gray-600">

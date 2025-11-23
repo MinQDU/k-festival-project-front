@@ -60,7 +60,10 @@ export default function Header() {
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
               <span className="text-sm text-white">
-                {user?.name || user?.id || "사용자"}님 환영합니다
+                {(() => {
+                  const name = user?.name || user?.id || "사용자";
+                  return name.length > 5 ? name.slice(0, 5) + "..." : name;
+                })()}
               </span>
               <button
                 onClick={() => logoutUser(navigate)}

@@ -106,7 +106,7 @@ export default function ReviewItem({
       ================================== */}
       <h3 className="mt-4 text-lg font-bold">{review.festivalName}</h3>
 
-      <div className="justify-between md:flex">
+      <div className="flex items-center justify-between">
         {/* ================================
           좋아요 + 댓글 수
       ================================== */}
@@ -130,7 +130,7 @@ export default function ReviewItem({
           {isCommunityPage && (
             <button
               onClick={() => navigate(`/festival/${review.festivalId}`)}
-              className="mt-4 rounded-xl bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500 p-4 py-3 text-center text-white shadow-md hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 md:mt-0"
+              className="mt-4 rounded-xl bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500 p-4 py-3 text-center text-xs text-white shadow-md hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 md:mt-0"
             >
               축제 보러가기
             </button>
@@ -166,7 +166,11 @@ export default function ReviewItem({
       {/* ================================
           본문 or 수정 모드
       ================================== */}
-      {!isEditing && <p className="mt-2 whitespace-pre-line text-gray-800">{review.content}</p>}
+      {!isEditing && (
+        <p className="mt-2 rounded-xl border border-gray-400 px-2 py-2 whitespace-pre-line text-gray-800">
+          {review.content}
+        </p>
+      )}
 
       {isEditing && isMine && (
         <div className="mt-3">
