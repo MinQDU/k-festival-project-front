@@ -106,63 +106,6 @@ export default function ReviewItem({
       ================================== */}
       <h3 className="mt-4 text-lg font-bold">{review.festivalName}</h3>
 
-      <div className="flex items-center justify-between">
-        {/* ================================
-          좋아요 + 댓글 수
-      ================================== */}
-        <div className="mt-4 flex items-center gap-6 text-sm text-gray-600">
-          <button onClick={() => onToggleLike(review.id)} className="flex items-center gap-1">
-            <HandThumbUpIcon
-              className={`h-5 w-5 ${review.liked ? "text-blue-600" : "text-gray-400"}`}
-            />
-            {review.likeCount}
-          </button>
-
-          <div className="flex items-center gap-1">
-            <ChatBubbleLeftRightIcon className="h-5 w-5" />
-            {review.comments.length}
-          </div>
-        </div>
-        <div>
-          {/* ================================
-          축제 보러가기 (커뮤니티 전용)
-      ================================== */}
-          {isCommunityPage && (
-            <button
-              onClick={() => navigate(`/festival/${review.festivalId}`)}
-              className="mt-4 rounded-xl bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500 p-4 py-3 text-center text-xs text-white shadow-md hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 md:mt-0"
-            >
-              축제 보러가기
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* ================================
-            내 리뷰 수정/삭제 아이콘 버튼
-        ================================ */}
-      {isMine && !isEditing && (
-        <div className="mt-3 flex items-center justify-end gap-3">
-          {/* 수정 */}
-          <button
-            onClick={() => setIsEditing?.(true)}
-            className="rounded-full p-2 transition hover:bg-gray-100"
-            title="수정하기"
-          >
-            <PencilSquareIcon className="h-5 w-5 text-[#0F079F]" />
-          </button>
-
-          {/* 삭제 */}
-          <button
-            onClick={onDelete}
-            className="rounded-full p-2 transition hover:bg-red-50"
-            title="삭제하기"
-          >
-            <TrashIcon className="h-5 w-5 text-red-600" />
-          </button>
-        </div>
-      )}
-
       {/* ================================
           본문 or 수정 모드
       ================================== */}
@@ -211,6 +154,63 @@ export default function ReviewItem({
           </div>
         </div>
       )}
+
+      {/* ================================
+            내 리뷰 수정/삭제 아이콘 버튼
+        ================================ */}
+      {isMine && !isEditing && (
+        <div className="mt-3 flex items-center justify-end gap-3">
+          {/* 수정 */}
+          <button
+            onClick={() => setIsEditing?.(true)}
+            className="rounded-full p-2 transition hover:bg-gray-100"
+            title="수정하기"
+          >
+            <PencilSquareIcon className="h-5 w-5 text-[#0F079F]" />
+          </button>
+
+          {/* 삭제 */}
+          <button
+            onClick={onDelete}
+            className="rounded-full p-2 transition hover:bg-red-50"
+            title="삭제하기"
+          >
+            <TrashIcon className="h-5 w-5 text-red-600" />
+          </button>
+        </div>
+      )}
+
+      <div className="mt-2 flex items-center justify-between">
+        {/* ================================
+          좋아요 + 댓글 수
+      ================================== */}
+        <div className="mt-4 flex items-center gap-6 text-sm text-gray-600">
+          <button onClick={() => onToggleLike(review.id)} className="flex items-center gap-1">
+            <HandThumbUpIcon
+              className={`h-5 w-5 ${review.liked ? "text-blue-600" : "text-gray-400"}`}
+            />
+            {review.likeCount}
+          </button>
+
+          <div className="flex items-center gap-1">
+            <ChatBubbleLeftRightIcon className="h-5 w-5" />
+            {review.comments.length}
+          </div>
+        </div>
+        <div>
+          {/* ================================
+          축제 보러가기 (커뮤니티 전용)
+      ================================== */}
+          {isCommunityPage && (
+            <button
+              onClick={() => navigate(`/festival/${review.festivalId}`)}
+              className="mt-4 rounded-xl bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500 p-4 py-3 text-center text-xs text-white shadow-md hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 md:mt-0"
+            >
+              축제 보러가기
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* ================================
           댓글 목록 & 작성
