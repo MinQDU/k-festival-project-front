@@ -1,3 +1,13 @@
+export interface FestivalReviewCommentRequest {
+  content: string;
+}
+
+export interface FestivalReviewRequest {
+  rating: number;
+  content: string;
+  type: "REVIEW" | "TIP" | "MATE";
+}
+
 export interface FestivalReviewComment {
   commentId: number;
   reviewId: number;

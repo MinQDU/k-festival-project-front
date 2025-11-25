@@ -1,5 +1,5 @@
 import { axios } from "./axios";
-import type { FestivalReview, FestivalReviewComment } from "../types/festivalReview";
+import type { FestivalReview, FestivalReviewComment, FestivalReviewRequest, FestivalReviewCommentRequest } from "../types/festivalReview";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -16,28 +16,18 @@ export const getFestivalReviews = async (festivalId: number): Promise<FestivalRe
 // ------ 리뷰 작성 ------
 export const createFestivalReview = async (
   festivalId: number,
-  rating: number,
-  content: string,
-  type: "REVIEW" | "TIP" | "MATE",
+  festivalReviewRequest: FestivalReviewRequest
 ) => {
-  const res = await axios.post(`${API_BASE_URL}/app/festival/${festivalId}/reviews`, null, {
-    params: { rating, content, type },
-  });
+  const res = await axios.post(`${API_BASE_URL}/app/festival/${festivalId}/reviews`, festivalReviewRequest);
   return res.data;
 };
-
+``
 // ------ 리뷰 수정 ------
 export const updateFestivalReview = async (
   reviewId: number,
-  rating: number,
-  content: string,
-  type: "REVIEW" | "TIP" | "MATE",
+  festivalReviewRequest: FestivalReviewRequest
 ) => {
-  const res = await axios.put(`${API_BASE_URL}/app/festival/reviews/${reviewId}`, null, {
-    params: { rating, content, type },
-  });
-  console.log("리뷰 수정 요청 데이터:", { reviewId, rating, content, type });
-  console.log("리뷰 수정 응답:", res.data);
+  const res = await axios.put(`${API_BASE_URL}/app/festival/reviews/${reviewId}`, festivalReviewRequest);
   return res.data;
 };
 
@@ -60,19 +50,14 @@ export const getReviewComments = async (reviewId: number): Promise<FestivalRevie
 };
 
 // ------ 댓글 작성 ------
-
-export const createReviewComment = async (reviewId: number, content: string) => {
-  const res = await axios.post(`${API_BASE_URL}/app/festival/reviews/${reviewId}/comments`, {
-    content,
-  });
+export const createReviewComment = async (reviewId: number, festivalReviewCommentRequest: FestivalReviewCommentRequest) => {
+  const res = await axios.post(`${API_BASE_URL}/app/festival/reviews/${reviewId}/comments`, festivalReviewCommentRequest);
   return res.data;
 };
 
 // ------ 댓글 수정 ------
-export const updateReviewComment = async (commentId: number, content: string) => {
-  const res = await axios.put(`${API_BASE_URL}/app/festival/review-comments/${commentId}`, {
-    content,
-  });
+export const updateReviewComment = async (commentId: number, festivalReviewCommentRequest: FestivalReviewCommentRequest) => {
+  const res = await axios.put(`${API_BASE_URL}/app/festival/review-comments/${commentId}`, festivalReviewCommentRequest);
   return res.data;
 };
 

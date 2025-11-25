@@ -82,7 +82,7 @@ export default function FestivalReview({ festivalId }: Props) {
     }
 
     try {
-      await createFestivalReview(festivalId, rating, content, type);
+      await createFestivalReview(festivalId, { rating, content, type });
       await loadReviews();
     } catch (err) {
       if (isAxiosError(err) && err.response?.status === 409) {
@@ -106,7 +106,7 @@ export default function FestivalReview({ festivalId }: Props) {
     if (!myReview) return;
 
     try {
-      await updateFestivalReview(myReview.id, rating, content, type);
+      await updateFestivalReview(myReview.id, { rating, content, type });
       await loadReviews();
     } catch (err) {
       handleApiError(err, navigate);
@@ -153,7 +153,7 @@ export default function FestivalReview({ festivalId }: Props) {
     }
 
     try {
-      await createReviewComment(reviewId, content);
+      await createReviewComment(reviewId, { content });
       await loadReviews();
     } catch (err) {
       handleApiError(err, navigate);
@@ -165,7 +165,7 @@ export default function FestivalReview({ festivalId }: Props) {
   // --------------------------
   const handleUpdateComment = async (commentId: number, content: string) => {
     try {
-      await updateReviewComment(commentId, content);
+      await updateReviewComment(commentId, { content });
       await loadReviews();
     } catch (err) {
       handleApiError(err, navigate);
