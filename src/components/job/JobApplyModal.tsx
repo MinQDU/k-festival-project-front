@@ -111,8 +111,15 @@ export default function JobApplyModal({ job, mode, onClose, onUpdated }: Props) 
       await cancelJobApply(job.jobId);
       onUpdated();
       onClose();
-    } catch (err) {
-      handleApiError(err, navigate);
+    } catch (err: any) {
+      if (
+        err?.response?.status === 409 &&
+        err?.response?.data?.name === "FESTIVAL_JOB_ALREADY_READ_BY_EMPLOYER"
+      ) {
+        alert(err?.response?.data?.message || "이미 사장님이 확인한 지원서입니다.");
+      } else {
+        handleApiError(err, navigate);
+      }
     } finally {
       setLoading(false);
     }

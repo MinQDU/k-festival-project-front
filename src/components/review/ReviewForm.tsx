@@ -5,12 +5,13 @@ import { StarIcon } from "@heroicons/react/24/solid";
 
 interface ReviewFormProps {
   mode: "create";
-  onSubmit: (rating: number, content: string) => void;
+  onSubmit: (rating: number, content: string, type: "REVIEW" | "TIP" | "MATE") => void;
 }
 
 export default function ReviewForm({ mode, onSubmit }: ReviewFormProps) {
   const [rating, setRating] = useState<number>(0);
   const [content, setContent] = useState<string>("");
+  const [type, setType] = useState<"REVIEW" | "TIP" | "MATE">("REVIEW");
 
   const handleSubmit = () => {
     if (rating <= 0) {
@@ -21,9 +22,10 @@ export default function ReviewForm({ mode, onSubmit }: ReviewFormProps) {
       alert("내용을 입력해주세요.");
       return;
     }
-    onSubmit(rating, content.trim());
+    onSubmit(rating, content.trim(), type);
     setRating(0);
     setContent("");
+    setType("REVIEW");
   };
 
   return (
@@ -49,6 +51,16 @@ export default function ReviewForm({ mode, onSubmit }: ReviewFormProps) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
+
+      <select
+        className="mt-3 w-full rounded-lg border p-2 text-sm"
+        value={type}
+        onChange={(e) => setType(e.target.value as "REVIEW" | "TIP" | "MATE")}
+      >
+        <option value="REVIEW">후기</option>
+        <option value="TIP">팁</option>
+        <option value="MATE">같이가요</option>
+      </select>
 
       <button
         type="button"

@@ -9,6 +9,7 @@ import FestivalCard from "../../components/festival/FestivalCard";
 import JobCard from "../../components/job/JobCard";
 import { getRecentFestivalsFromCookie } from "../../utils/recentFestivals";
 import JobApplyModal from "../../components/job/JobApplyModal";
+import JobApplicantsModal from "../../components/job/JobApplicantsModal";
 
 export default function MainPage() {
   const hotTags = ["겨울", "크리스마스", "불꽃", "산타"];
@@ -22,6 +23,7 @@ export default function MainPage() {
   const [recent, setRecent] = useState<FestivalSimple[]>([]);
   const [selectedJob, setSelectedJob] = useState<JobResponse | null>(null);
   const [applyMode, setApplyMode] = useState<"create" | "edit">("create");
+  const [showApplicantsForJob, setShowApplicantsForJob] = useState<number | null>(null);
 
   useEffect(() => {
     loadMain();
@@ -90,10 +92,6 @@ export default function MainPage() {
         {urgentJobs.map((job) => {
           const isMine = currentUid != null && currentUid === job.employerUid;
           const hasApplied = !!job.alreadyApplied;
-          function setShowApplicantsForJob(jobId: number): void {
-            // For employers: navigate to the applicants management page for the job
-            navigate(`/job/${jobId}/applicants`);
-          }
           return (
             <div className="w-full shrink-0 cursor-pointer snap-center" key={job.jobId}>
               <JobCard
@@ -126,7 +124,14 @@ export default function MainPage() {
           }}
         />
       )}
-
+      {/* 지원자 관리 모달 */}
+      {showApplicantsForJob !== null && (
+        <JobApplicantsModal
+          jobId={showApplicantsForJob}
+          employerUid={urgentJobs.find((x) => x.jobId === showApplicantsForJob)?.employerUid ?? ""}
+          onClose={() => setShowApplicantsForJob(null)}
+        />
+      )}
       {/* 최근 본 항목 */}
       <div className="mt-10 flex items-center justify-between">
         <h2 className="text-xl font-bold">최근 본 항목</h2>

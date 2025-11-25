@@ -70,7 +70,11 @@ export default function FestivalReview({ festivalId }: Props) {
   // --------------------------
   // 리뷰 작성
   // --------------------------
-  const handleCreateReview = async (rating: number, content: string) => {
+  const handleCreateReview = async (
+    rating: number,
+    content: string,
+    type: "REVIEW" | "TIP" | "MATE",
+  ) => {
     if (!accessToken) {
       alert("로그인이 필요합니다.");
       navigate("/login");
@@ -78,7 +82,7 @@ export default function FestivalReview({ festivalId }: Props) {
     }
 
     try {
-      await createFestivalReview(festivalId, rating, content);
+      await createFestivalReview(festivalId, rating, content, type);
       await loadReviews();
     } catch (err) {
       if (isAxiosError(err) && err.response?.status === 409) {
@@ -94,11 +98,15 @@ export default function FestivalReview({ festivalId }: Props) {
   // --------------------------
   // 내 리뷰 수정
   // --------------------------
-  const handleUpdateMyReview = async (rating: number, content: string) => {
+  const handleUpdateMyReview = async (
+    rating: number,
+    content: string,
+    type: "REVIEW" | "TIP" | "MATE",
+  ) => {
     if (!myReview) return;
 
     try {
-      await updateFestivalReview(myReview.id, rating, content);
+      await updateFestivalReview(myReview.id, rating, content, type);
       await loadReviews();
     } catch (err) {
       handleApiError(err, navigate);
@@ -217,9 +225,9 @@ export default function FestivalReview({ festivalId }: Props) {
 
       {/* 다른 사람 리뷰 리스트 */}
       <div className="mt-6 space-y-4">
-        {otherReviews.map((review) => (
+        {otherReviews.map((review, idx) => (
           <ReviewItem
-            key={review.id}
+            key={idx}
             review={review}
             isMine={false}
             currentUserName={currentUserName}

@@ -45,7 +45,7 @@ export default function JobApplicantsModal({ jobId, employerUid, onClose }: Prop
 
   return (
     <div className="fixed inset-0 z-110 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-lg rounded-2xl bg-white p-5 shadow-xl">
+      <div className="relative flex max-h-[80vh] w-full max-w-lg flex-col rounded-2xl bg-white p-5 shadow-xl">
         <h2 className="mb-4 text-xl font-bold">
           {currentUid === employerUid ? "지원자 목록" : "내 지원 내역"}
         </h2>
@@ -54,7 +54,7 @@ export default function JobApplicantsModal({ jobId, employerUid, onClose }: Prop
           <p className="py-4 text-center text-gray-500">지원 내역이 없습니다.</p>
         )}
 
-        <div className="space-y-3">
+        <div className="space-y-3 overflow-y-auto pb-16">
           {list.map((ap) => (
             <div key={ap.applyId} className="rounded-lg border p-3 shadow-sm">
               <p className="font-semibold">{ap.name}</p>
@@ -112,7 +112,7 @@ export default function JobApplicantsModal({ jobId, employerUid, onClose }: Prop
 
         <button
           onClick={onClose}
-          className="mt-5 w-full rounded-lg bg-gray-300 py-2 font-semibold text-gray-800"
+          className="absolute bottom-0 left-0 w-full rounded-lg bg-gray-300 py-2 font-semibold text-gray-800"
         >
           닫기
         </button>

@@ -149,11 +149,18 @@ export default function ReviewPage() {
   // --------------------------------------
   // 🔥 리뷰 수정
   // --------------------------------------
-  const handleUpdateReview = async (reviewId: number, rating: number, content: string) => {
+  const handleUpdateReview = async (
+    reviewId: number,
+    rating: number,
+    content: string,
+    type: "REVIEW" | "TIP" | "MATE",
+  ) => {
     try {
-      await updateFestivalReview(reviewId, rating, content);
+      await updateFestivalReview(reviewId, rating, content, type);
 
-      setReviews((prev) => prev.map((r) => (r.id === reviewId ? { ...r, rating, content } : r)));
+      setReviews((prev) =>
+        prev.map((r) => (r.id === reviewId ? { ...r, rating, content, type } : r)),
+      );
 
       setEditingId(null);
     } catch (error) {
@@ -182,16 +189,16 @@ export default function ReviewPage() {
       <h1 className="mb-4 text-2xl font-bold">축제 커뮤니티</h1>
 
       <div className="space-y-6">
-        {reviews.map((rev) => (
+        {reviews.map((rev, idx) => (
           <ReviewItem
-            key={rev.id}
+            key={idx}
             review={rev}
             currentUserName={user?.name ?? null}
             isMine={user?.name === rev.userName}
             isEditing={editingId === rev.id}
             isCommunityPage={true}
             setIsEditing={(v) => setEditingId(v ? rev.id : null)}
-            onUpdate={(rating, content) => handleUpdateReview(rev.id, rating, content)}
+            onUpdate={(rating, content, type) => handleUpdateReview(rev.id, rating, content, type)}
             onDelete={() => handleDeleteReview(rev.id)}
             onToggleLike={handleToggleLike}
             onCreateComment={handleCreateComment}

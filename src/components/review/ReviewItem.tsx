@@ -15,7 +15,7 @@ interface ReviewItemProps {
   isCommunityPage?: boolean;
   setIsEditing?: (value: boolean) => void;
 
-  onUpdate?: (rating: number, content: string) => void;
+  onUpdate?: (rating: number, content: string, type: "REVIEW" | "TIP" | "MATE") => void;
   onDelete?: () => void;
   onToggleLike: (reviewId: number) => void;
 
@@ -42,9 +42,16 @@ export default function ReviewItem({
 
   const [editRating, setEditRating] = useState(review.rating);
   const [editContent, setEditContent] = useState(review.content);
+  const [editType, setEditType] = useState(review.type);
 
   const categoryLabel =
-    review.type === "MATE" ? "같이 가요" : review.type === "TIP" ? "팁" : "후기";
+    review.type === "REVIEW"
+      ? "후기"
+      : review.type === "TIP"
+        ? "팁"
+        : review.type === "MATE"
+          ? "같이가요"
+          : "기타";
 
   const isCommentOwner = (userName: string) =>
     currentUserName != null && currentUserName === userName;
@@ -64,12 +71,13 @@ export default function ReviewItem({
 
   const handleSaveEdit = () => {
     if (!onUpdate) return;
-    onUpdate(editRating, editContent);
+    onUpdate(editRating, editContent, editType);
   };
 
   const handleCancelEdit = () => {
     setEditRating(review.rating);
     setEditContent(review.content);
+    setEditType(review.type);
     setIsEditing?.(false);
   };
 
@@ -137,6 +145,20 @@ export default function ReviewItem({
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
           />
+
+          {/* 카테고리 선택 */}
+          <div className="mt-3 flex items-center gap-3">
+            <label className="text-sm font-medium">카테고리:</label>
+            <select
+              value={editType}
+              onChange={(e) => setEditType(e.target.value as "REVIEW" | "TIP" | "MATE")}
+              className="rounded-lg border px-2 py-1 text-sm"
+            >
+              <option value="REVIEW">후기</option>
+              <option value="TIP">팁</option>
+              <option value="MATE">같이 가요</option>
+            </select>
+          </div>
 
           <div className="mt-3 flex gap-2">
             <button

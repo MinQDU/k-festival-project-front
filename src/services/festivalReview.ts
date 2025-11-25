@@ -14,18 +14,30 @@ export const getFestivalReviews = async (festivalId: number): Promise<FestivalRe
 };
 
 // ------ 리뷰 작성 ------
-export const createFestivalReview = async (festivalId: number, rating: number, content: string) => {
+export const createFestivalReview = async (
+  festivalId: number,
+  rating: number,
+  content: string,
+  type: "REVIEW" | "TIP" | "MATE",
+) => {
   const res = await axios.post(`${API_BASE_URL}/app/festival/${festivalId}/reviews`, null, {
-    params: { rating, content },
+    params: { rating, content, type },
   });
   return res.data;
 };
 
 // ------ 리뷰 수정 ------
-export const updateFestivalReview = async (reviewId: number, rating: number, content: string) => {
+export const updateFestivalReview = async (
+  reviewId: number,
+  rating: number,
+  content: string,
+  type: "REVIEW" | "TIP" | "MATE",
+) => {
   const res = await axios.put(`${API_BASE_URL}/app/festival/reviews/${reviewId}`, null, {
-    params: { rating, content },
+    params: { rating, content, type },
   });
+  console.log("리뷰 수정 요청 데이터:", { reviewId, rating, content, type });
+  console.log("리뷰 수정 응답:", res.data);
   return res.data;
 };
 
