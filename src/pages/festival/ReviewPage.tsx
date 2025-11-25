@@ -100,7 +100,7 @@ export default function ReviewPage() {
   // --------------------------------------
   const handleCreateComment = async (reviewId: number, content: string) => {
     try {
-      const newComment = await createReviewComment(reviewId, content);
+      const newComment = await createReviewComment(reviewId, { content });
 
       setReviews((prev) =>
         prev.map((r) => (r.id === reviewId ? { ...r, comments: [...r.comments, newComment] } : r)),
@@ -115,7 +115,7 @@ export default function ReviewPage() {
   // --------------------------------------
   const handleUpdateComment = async (commentId: number, content: string) => {
     try {
-      await updateReviewComment(commentId, content);
+      await updateReviewComment(commentId, { content });
 
       setReviews((prev) =>
         prev.map((r) => ({
@@ -156,7 +156,7 @@ export default function ReviewPage() {
     type: "REVIEW" | "TIP" | "MATE",
   ) => {
     try {
-      await updateFestivalReview(reviewId, rating, content, type);
+      await updateFestivalReview(reviewId, {rating, content, type});
 
       setReviews((prev) =>
         prev.map((r) => (r.id === reviewId ? { ...r, rating, content, type } : r)),
